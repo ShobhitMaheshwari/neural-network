@@ -9,34 +9,41 @@ def rand(x, y):
     return [[random.random() for i in range(y)] for j in range(x)]
 
 
-def ani_frame():
+def ani_frame(images):
+
+
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.set_aspect('equal')
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
 
-    im = ax.imshow(rand(300,300),cmap='gray',interpolation='nearest')
+    im = ax.imshow(images[0],cmap='gray',interpolation='nearest')
     im.set_clim([0,1])
     fig.set_size_inches([5,5])
     plt.tight_layout()
 
     def update_img(n):
-        tmp = rand(300,300)
-        im.set_data(tmp)
+        update_img.index += 1
+        print(update_img.index)
+        im.set_data(images[update_img.index])
+        saveImage(str(update_img.index)+'.png', images[update_img.index])
         return im
 
+    update_img.index = 0
+
+    saveImage('0.png', images[0])
     #legend(loc=0)
-    ani = animation.FuncAnimation(fig,update_img,300,interval=30)
+    ani = animation.FuncAnimation(fig,update_img,99,interval=30)
     writer = animation.writers['ffmpeg'](fps=30)
 
-    ani.save('demo.mp4',writer=writer,dpi=100)
+    ani.save('demo.mp4',writer=writer)
     return ani
 
 
 def saveImage(name, image):
     """ Plot a single MNIST image."""
-    scipy.misc.toimage(255*image, cmin=0.0, cmax=255).save(name)
+    scipy.misc.toimage(255*image, cmin=0.0, cmax=255).save('pics/'+name)
     # scipy.misc.imsave(name, image)
 
 
@@ -53,9 +60,9 @@ def main():
     images = [image for (image, digit) in images if digit == 7]
     idxs = random.sample(xrange(1, len(images)), 2)
 
-    saveImage('x.png', images[idxs[0]])
-    saveImage('y.png', images[idxs[1]])
-    ani_frame()
+    # saveImage('x.png', images[idxs[0]])
+    # saveImage('y.png', images[idxs[1]])
+    ani_frame(images[0:200])
 
 if __name__ == "__main__":
     # parser = argparse.ArgumentParser(description='Process some integers.')
