@@ -1,10 +1,14 @@
-import argparse, mnist_loader, random
+import sys
+sys.path.append('../..')
+import src.mnist_loader as mnist_loader
+import argparse, random
 import numpy as np
 import scipy.misc
 import matplotlib
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import operator
+import os
 
 
 def ani_frame(name, images):
@@ -27,12 +31,16 @@ def ani_frame(name, images):
     #legend(loc=0)
     ani = animation.FuncAnimation(fig,update_img,len(images) - 1)
     writer = animation.writers['ffmpeg'](fps=5)
+    if not os.path.exists('pics'):
+        os.makedirs('pics')
     ani.save('pics/'+name, writer=writer)
     return ani
 
 
 def saveImage(name, image):
     """ Plot a single MNIST image."""
+    if not os.path.exists('pics'):
+        os.makedirs('pics')
     scipy.misc.toimage(255*image, cmin=0.0, cmax=255).save('pics/'+name)
     # scipy.misc.imsave(name, image)
 
