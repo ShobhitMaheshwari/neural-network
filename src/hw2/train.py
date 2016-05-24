@@ -6,6 +6,8 @@ import numpy as np
 import random
 import src.network
 
+#this method does not work as no normalization was done in this case
+#horrible results
 def get_modified_training_set(training_set, samples_per_digit = 100):
 	modified_training_set = []
 	for digit in range(0, 10):
@@ -21,6 +23,7 @@ def get_modified_training_set(training_set, samples_per_digit = 100):
 
 
 def normalize(n, lst):
+	# uncomment the following lines to see the effect without MST ie baseline
 	# samples = []
 	# for x in lst:
 	# 	samples.extend([x[0].get_training_example()])
@@ -36,22 +39,6 @@ def normalize(n, lst):
 	samples = []
 	for x in tmp_lst:
 		samples.extend([x[0].get_training_example()] * x[1])
-	return samples
-
-def take_best_n_samples(n, lst):
-	samples = []
-	count = 0
-	for x in lst:
-		if x[1] + count > n:
-			samples.extend([x[0].get_training_example()] * (n - count))
-			break
-		else:
-			samples.extend([x[0].get_training_example()] * x[1])
-			count += x[1]
-
-	# samples = []
-	# for x in lst:
-	# 	samples.extend([x[0].get_training_example()])
 	return samples
 
 def get_modified_training_set2(training_set, samples_per_digit = 100):
