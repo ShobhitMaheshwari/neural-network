@@ -1,15 +1,32 @@
-import imagetools
+from graph import Graph
 import sys
 sys.path.append('../..')
 import src.mnist_loader as mnist_loader
 import numpy as np
+import random
+import src.network
+
+def get_modified_training_set(training_set, samples_per_digit = 100):
+	modified_training_set = []
+	for digit in range(0, 10):
+		out = np.zeros((10, 1))
+		out[digit] = [1]
+		digits = [(x, y) for (x, y) in training_set if np.array_equal(y, out)]
+		tmp = Graph(digits[0: samples_per_digit]).get_modified_input()
+		# tmp = digits[0: samples_per_digit]
+		modified_training_set.extend(tmp)
+		print("modifying dataset {digit}. Now adding {count} more examples".format(digit=digit, count=len(tmp)))
+	random.shuffle(modified_training_set)
+	return modified_training_set
+
 
 def main():
 	training_set, validation_set, test_set = mnist_loader.load_data_wrapper()
-	for digit in range(0, 10):
-		out = np.zeros((10,1))
-		out[digit]=[1]
-		digits = [(x, y) for (x, y) in training_set if np.array_equal(y, out)]
+
+	training_set = get_modified_training_set(training_set)
+	net = src.network.Network([784, 30, 10])
+	net.SGD(training_set, 30, 10, 3.0, test_data=test_set)
+
 	pass
 
 if __name__=="__main__":

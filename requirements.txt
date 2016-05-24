@@ -4,3 +4,4 @@ scipy
 Theano
 Pillow
 matplotlib
+networkx
