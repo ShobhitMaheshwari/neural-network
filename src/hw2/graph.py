@@ -3,6 +3,7 @@ from image import Image
 import matplotlib.pyplot as plt
 import os
 import scipy
+import operator
 
 class Graph:
 	def __init__(self, training_set):
@@ -47,3 +48,25 @@ class Graph:
 			examples.extend([x.get_training_example()] * new_set[x])
 			# examples.extend([x.get_training_example()] * 1)
 		return examples
+
+	def get_modified_input2(self):
+		MST = nx.minimum_spanning_tree(self.G)
+		new_set = {}
+		count = 0
+		while (True):
+			nodes_degree = MST.degree()
+			leaves = [x for x in nodes_degree if nodes_degree[x] == 1]
+			for x in leaves:
+				new_set[x] = 2 ** count
+			count += 1
+			MST.remove_nodes_from(leaves)
+			if MST.number_of_nodes() == 1:
+				new_set[MST.nodes()[0]] = 2 ** count
+				break
+			if MST.number_of_nodes() == 0:
+				break
+		list = sorted(new_set.items(), key=operator.itemgetter(1), reverse=True)
+		count = 0
+		for x in list:
+			count += x[1]
+		return count, list
