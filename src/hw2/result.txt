@@ -1,0 +1,21 @@
+200 samples per digit were taken
+with MST technique we get 65931 samples per digit
+
+the architecture and hyper parameters are
+net = src.network.Network([784, 30, 10])
+net.SGD(training_set, 10, 10, 3.0, test_data=test_set)
+
+we get the following for MST generated dataset
+Epoch 0: 7403 / 10000
+Epoch 1: 7555 / 10000
+Epoch 2: 7587 / 10000
+Epoch 3: 7656 / 10000
+Epoch 4: 7702 / 10000
+Epoch 5: 7766 / 10000
+Epoch 6: 7763 / 10000
+Epoch 7: 7785 / 10000
+Epoch 8: 7816 / 10000
+Epoch 9: 7822 / 10000
+
+
+
